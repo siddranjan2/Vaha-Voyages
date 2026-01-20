@@ -20,12 +20,6 @@ export interface ItineraryItem {
   description: string;
 }
 
-export interface AddOn {
-  id: string;
-  name: string;
-  price: number;
-}
-
 export interface GalleryImage {
   id: string;
   url: string;
@@ -48,7 +42,6 @@ export interface Trip {
   galleryImages: string[];
   itinerary: ItineraryItem[];
   featured: boolean;
-  addons: AddOn[];
   tags: string[];
 }
 

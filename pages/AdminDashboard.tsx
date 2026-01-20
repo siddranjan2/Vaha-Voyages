@@ -29,11 +29,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [isAddingGallery, setIsAddingGallery] = useState(false);
   const [editingGalleryId, setEditingGalleryId] = useState<string | null>(null);
 
+  // Fix: Removed 'addons' property which was not in Trip interface.
   const initialTripForm: Partial<Trip> = {
     title: '', description: '', destination: '', country: '', basePrice: 0,
     activity: ActivityType.TREKKING, difficulty: Difficulty.MODERATE, duration: '7 Days',
     mainImage: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1200',
-    featured: true, addons: [], itinerary: [], tags: [], galleryImages: []
+    featured: true, itinerary: [], tags: [], galleryImages: []
   };
 
   const initialGalleryForm: Partial<GalleryImage> = { url: '', type: 'image', location: '', activity: ActivityType.TREKKING };

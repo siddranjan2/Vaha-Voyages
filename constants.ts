@@ -24,7 +24,7 @@ export const MOCK_TRIPS: Trip[] = [
       { day: 4, title: 'Khardung La Summit', description: 'The ultimate challenge. Climbing to one of the world\'s highest motorable passes.' }
     ],
     featured: true,
-    addons: [],
+    // Fix: Removed 'addons' property which was not in Trip interface.
     tags: ['ladakh', 'cycling', 'india', 'high-altitude', 'luxury']
   },
   {
@@ -46,7 +46,7 @@ export const MOCK_TRIPS: Trip[] = [
       { day: 4, title: 'Night Diving', description: 'Witness the bioluminescent magic of the night ocean under expert supervision.' }
     ],
     featured: true,
-    addons: [],
+    // Fix: Removed 'addons' property which was not in Trip interface.
     tags: ['andaman', 'diving', 'india', 'island', 'ocean']
   },
   {
@@ -68,7 +68,7 @@ export const MOCK_TRIPS: Trip[] = [
       { day: 4, title: 'Peak Drop', description: 'Advanced descent through pine forests and untouched backcountry powder.' }
     ],
     featured: true,
-    addons: [],
+    // Fix: Removed 'addons' property which was not in Trip interface.
     tags: ['skiing', 'himalayas', 'india', 'adventure', 'winter']
   },
   {
@@ -85,7 +85,7 @@ export const MOCK_TRIPS: Trip[] = [
     galleryImages: [],
     itinerary: [],
     featured: true,
-    addons: [],
+    // Fix: Removed 'addons' property which was not in Trip interface.
     tags: ['nepal', 'everest', 'trekking', 'expedition', 'mountain']
   },
   {
@@ -102,7 +102,7 @@ export const MOCK_TRIPS: Trip[] = [
     galleryImages: [],
     itinerary: [],
     featured: true,
-    addons: [],
+    // Fix: Removed 'addons' property which was not in Trip interface.
     tags: ['vietnam', 'kayaking', 'halong-bay', 'heritage', 'luxury']
   }
 ];

@@ -112,7 +112,6 @@ const App: React.FC = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      // Fetch Trips from Supabase
       const { data: tripsData, error: tripsError } = await supabase.from('trips').select('*').order('featured', { ascending: false });
       
       if (tripsData && tripsData.length > 0) {
@@ -125,12 +124,10 @@ const App: React.FC = () => {
           tags: t.tags || []
         })));
       } else {
-        // Use Mock data if DB is empty or connection fails
-        console.warn('Trips fetch returned empty or failed, using fallback:', tripsError);
+        if (tripsError) console.warn('Supabase trips fetch error:', tripsError);
         setTrips(MOCK_TRIPS);
       }
 
-      // Fetch Gallery
       const { data: galleryData } = await supabase.from('gallery').select('*');
       if (galleryData && galleryData.length > 0) {
         setGalleryItems(galleryData);
@@ -138,7 +135,6 @@ const App: React.FC = () => {
         setGalleryItems(GALLERY_IMAGES);
       }
 
-      // Fetch Leads
       const { data: leadsData } = await supabase.from('leads').select('*').order('created_at', { ascending: false });
       if (leadsData) {
         setLeads(leadsData.map(l => ({
@@ -156,51 +152,70 @@ const App: React.FC = () => {
     }
   };
 
+  /**
+   * Helper to convert Trip object into DB-compatible snake_case record.
+   * We explicitly select only the keys the DB expects.
+   */
+  const mapTripToDB = (trip: Trip) => ({
+    id: trip.id,
+    title: trip.title,
+    description: trip.description,
+    destination: trip.destination,
+    country: trip.country,
+    activity: trip.activity,
+    duration: trip.duration,
+    difficulty: trip.difficulty,
+    base_price: trip.basePrice,
+    main_image: trip.mainImage,
+    gallery_images: trip.galleryImages,
+    itinerary: trip.itinerary,
+    featured: trip.featured,
+    tags: trip.tags
+  });
+
   const handleAddTrip = async (newTrip: Trip) => {
-    const { error } = await supabase.from('trips').insert([{
-      ...newTrip,
-      base_price: newTrip.basePrice,
-      main_image: newTrip.mainImage,
-      gallery_images: newTrip.galleryImages,
-      itinerary: newTrip.itinerary,
-      tags: newTrip.tags
-    }]);
-    if (!error) fetchData();
-    else console.error('Error adding trip:', error);
+    const dbRecord = mapTripToDB(newTrip);
+    const { error } = await supabase.from('trips').insert([dbRecord]);
+    
+    if (!error) {
+      await fetchData();
+    } else {
+      console.error('Database INSERT failed. Check if column names match:', error);
+      alert(`Sync Error: ${error.message}`);
+    }
   };
 
   const handleUpdateTrip = async (updated: Trip) => {
-    const { error } = await supabase.from('trips').update({
-      ...updated,
-      base_price: updated.basePrice,
-      main_image: updated.mainImage,
-      gallery_images: updated.galleryImages,
-      itinerary: updated.itinerary,
-      tags: updated.tags
-    }).eq('id', updated.id);
-    if (!error) fetchData();
-    else console.error('Error updating trip:', error);
+    const dbRecord = mapTripToDB(updated);
+    const { error } = await supabase.from('trips').update(dbRecord).eq('id', updated.id);
+    
+    if (!error) {
+      await fetchData();
+    } else {
+      console.error('Database UPDATE failed. Check if record ID exists:', error);
+      alert(`Sync Error: ${error.message}`);
+    }
   };
 
   const handleDeleteTrip = async (id: string) => {
     const { error } = await supabase.from('trips').delete().eq('id', id);
-    if (!error) fetchData();
+    if (!error) await fetchData();
     else console.error('Error deleting trip:', error);
   };
   
   const handleAddGallery = async (item: GalleryImage) => {
     const { error } = await supabase.from('gallery').insert([item]);
-    if (!error) fetchData();
+    if (!error) await fetchData();
   };
 
   const handleUpdateGallery = async (updated: GalleryImage) => {
     const { error } = await supabase.from('gallery').update(updated).eq('id', updated.id);
-    if (!error) fetchData();
+    if (!error) await fetchData();
   };
 
   const handleDeleteGallery = async (id: string) => {
     const { error } = await supabase.from('gallery').delete().eq('id', id);
-    if (!error) fetchData();
+    if (!error) await fetchData();
   };
 
   const handleAddInquiry = async (inquiry: Inquiry) => {
@@ -214,7 +229,7 @@ const App: React.FC = () => {
       status: inquiry.status,
       created_at: inquiry.date
     }]);
-    if (!error) fetchData();
+    if (!error) await fetchData();
     else console.error('Error submitting lead:', error);
   };
 
