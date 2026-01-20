@@ -1,13 +1,6 @@
 
 import { Trip, Difficulty, ActivityType, GalleryImage } from './types';
 
-export const MOCK_ADDONS = [
-  { id: '1', name: 'Premium Gear Rental', price: 15000 },
-  { id: '2', name: 'Private Professional Coach', price: 25000 },
-  { id: '3', name: 'Luxury Spa Upgrade', price: 12000 },
-  { id: '4', name: 'Gourmet Private Dining', price: 8000 }
-];
-
 export const MOCK_TRIPS: Trip[] = [
   {
     id: 't1',
@@ -31,7 +24,7 @@ export const MOCK_TRIPS: Trip[] = [
       { day: 4, title: 'Khardung La Summit', description: 'The ultimate challenge. Climbing to one of the world\'s highest motorable passes.' }
     ],
     featured: true,
-    addons: MOCK_ADDONS,
+    addons: [],
     tags: ['ladakh', 'cycling', 'india', 'high-altitude', 'luxury']
   },
   {
@@ -53,7 +46,7 @@ export const MOCK_TRIPS: Trip[] = [
       { day: 4, title: 'Night Diving', description: 'Witness the bioluminescent magic of the night ocean under expert supervision.' }
     ],
     featured: true,
-    addons: MOCK_ADDONS,
+    addons: [],
     tags: ['andaman', 'diving', 'india', 'island', 'ocean']
   },
   {
@@ -75,7 +68,7 @@ export const MOCK_TRIPS: Trip[] = [
       { day: 4, title: 'Peak Drop', description: 'Advanced descent through pine forests and untouched backcountry powder.' }
     ],
     featured: true,
-    addons: MOCK_ADDONS,
+    addons: [],
     tags: ['skiing', 'himalayas', 'india', 'adventure', 'winter']
   },
   {
@@ -92,7 +85,7 @@ export const MOCK_TRIPS: Trip[] = [
     galleryImages: [],
     itinerary: [],
     featured: true,
-    addons: MOCK_ADDONS,
+    addons: [],
     tags: ['nepal', 'everest', 'trekking', 'expedition', 'mountain']
   },
   {
@@ -109,7 +102,7 @@ export const MOCK_TRIPS: Trip[] = [
     galleryImages: [],
     itinerary: [],
     featured: true,
-    addons: MOCK_ADDONS,
+    addons: [],
     tags: ['vietnam', 'kayaking', 'halong-bay', 'heritage', 'luxury']
   }
 ];

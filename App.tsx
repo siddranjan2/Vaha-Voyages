@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { HashRouter, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Gallery from './pages/Gallery';
 import Destinations from './pages/Destinations';
@@ -10,13 +10,12 @@ import AdminLogin from './pages/AdminLogin';
 import TripDetail from './pages/TripDetail';
 import { MOCK_TRIPS, GALLERY_IMAGES } from './constants';
 import { Trip, Inquiry, GalleryImage } from './types';
+import { supabase } from './supabase';
 
-// Admin Auth Wrapper
 const ProtectedAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Check session storage for auth
     const auth = sessionStorage.getItem('vaha_admin_auth');
     setIsAuthenticated(auth === 'true');
   }, []);
@@ -28,19 +27,14 @@ const ProtectedAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) =
     }
   };
 
-  if (isAuthenticated === null) return null; // Loading state
-
-  if (!isAuthenticated) {
-    return <AdminLogin onLogin={handleLogin} />;
-  }
-
+  if (isAuthenticated === null) return null;
+  if (!isAuthenticated) return <AdminLogin onLogin={handleLogin} />;
   return <>{children}</>;
 };
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  // Hide navbar on any route starting with 'portal-access'
   const isAdmin = location.pathname.includes('portal-access');
 
   useEffect(() => {
@@ -82,26 +76,8 @@ const Footer: React.FC = () => {
             Curating Asia's most exclusive adventure experiences. We define the new way to travel.
           </p>
           <div className="flex gap-5">
-             <a 
-               href="https://instagram.com" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               className="w-10 h-10 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:text-white hover:bg-teal-600 hover:border-teal-600 transition-all duration-300 group"
-             >
-                <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                </svg>
-             </a>
-             <a 
-               href="https://whatsapp.com" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               className="w-10 h-10 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:text-white hover:bg-teal-600 hover:border-teal-600 transition-all duration-300 group"
-             >
-                <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.887.002-5.462-4.415-9.89-9.881-9.891-5.446 0-9.884 4.438-9.887 9.887-.001 2.22.634 4.385 1.835 6.265l-1.015 3.71 3.844-.888zm11.367-7.312c-.151-.252-.555-.403-1.161-.706-.606-.303-3.584-1.767-4.139-1.969-.556-.202-.96-.303-1.363.303-.404.606-1.565 1.97-1.918 2.374-.354.404-.707.455-1.313.152-.606-.303-2.559-1.13-4.874-3.195-1.571-2.951-3.511-3.297-4.117-.347-.606-.038-.933.265-1.234.272-.271.606-.706.808-1.01.202-.303.269-.522.404-.875.135-.353.067-.656-.034-.858-.101-.202-.858-2.068-1.176-2.834-.31-.749-.624-.648-.858-.66l-.733-.008c-.252 0-.663.095-1.008.473-.346.378-1.321 1.291-1.321 3.148 0 1.857 1.354 3.653 1.539 3.905.185.252 2.651 4.049 6.423 5.676.897.387 1.597.618 2.14.793 1.05.334 2.006.287 2.76.175.842-.125 2.583-1.056 2.946-2.074.364-1.018.364-1.892.253-2.074z" />
-                </svg>
-             </a>
+             <a href="#" className="w-10 h-10 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:text-white hover:bg-teal-600 transition-all duration-300">Insta</a>
+             <a href="#" className="w-10 h-10 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:text-white hover:bg-teal-600 transition-all duration-300">WA</a>
           </div>
         </div>
         <div>
@@ -109,65 +85,144 @@ const Footer: React.FC = () => {
           <ul className="space-y-4 text-sm text-slate-600 font-medium">
             <li><Link to="/destinations" className="hover:text-teal-600 transition-colors">Destinations</Link></li>
             <li><Link to="/gallery" className="hover:text-teal-600 transition-colors">The Gallery</Link></li>
-            <li><Link to="/" className="hover:text-teal-600 transition-colors">Signature Trips</Link></li>
           </ul>
         </div>
         <div>
           <h3 className="text-teal-600 uppercase tracking-widest text-xs font-bold mb-6">Support</h3>
           <ul className="space-y-4 text-sm text-slate-600 font-medium">
-            <li><a href="#" className="hover:text-teal-600 transition-colors">Curated Itineraries</a></li>
-            <li><a href="#" className="hover:text-teal-600 transition-colors">Private Expedition</a></li>
-            <li><a href="#" className="hover:text-teal-600 transition-colors">Privacy Policy</a></li>
+            <li><a href="#" className="hover:text-teal-600 transition-colors">Itineraries</a></li>
+            <li><a href="#" className="hover:text-teal-600 transition-colors">Privacy</a></li>
           </ul>
         </div>
-      </div>
-      <div className="container mx-auto px-6 mt-12 pt-8 border-t border-slate-200 text-center text-[10px] text-slate-400 uppercase tracking-widest">
-        &copy; 2024 Vaha Voyages Adventure & Wellness. All Rights Reserved.
       </div>
     </footer>
   );
 };
 
-// Persistence helper
-const loadPersistedData = <T,>(key: string, fallback: T): T => {
-  const data = localStorage.getItem(key);
-  if (!data) return fallback;
-  try {
-    return JSON.parse(data);
-  } catch (e) {
-    console.error(`Error hydrating ${key}:`, e);
-    return fallback;
-  }
-};
-
 const App: React.FC = () => {
-  // Initialize state from localStorage or Fallbacks
-  const [trips, setTrips] = useState<Trip[]>(() => loadPersistedData('vaha_trips_v1', MOCK_TRIPS));
-  const [galleryItems, setGalleryItems] = useState<GalleryImage[]>(() => loadPersistedData('vaha_gallery_v1', GALLERY_IMAGES));
-  const [leads, setLeads] = useState<Inquiry[]>(() => loadPersistedData('vaha_leads_v1', []));
-
-  // Sync with localStorage on change
-  useEffect(() => {
-    localStorage.setItem('vaha_trips_v1', JSON.stringify(trips));
-  }, [trips]);
+  const [trips, setTrips] = useState<Trip[]>([]);
+  const [galleryItems, setGalleryItems] = useState<GalleryImage[]>([]);
+  const [leads, setLeads] = useState<Inquiry[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    localStorage.setItem('vaha_gallery_v1', JSON.stringify(galleryItems));
-  }, [galleryItems]);
+    fetchData();
+  }, []);
 
-  useEffect(() => {
-    localStorage.setItem('vaha_leads_v1', JSON.stringify(leads));
-  }, [leads]);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      // Fetch Trips from Supabase
+      const { data: tripsData, error: tripsError } = await supabase.from('trips').select('*').order('featured', { ascending: false });
+      
+      if (tripsData && tripsData.length > 0) {
+        setTrips(tripsData.map(t => ({
+          ...t,
+          basePrice: t.base_price,
+          mainImage: t.main_image,
+          galleryImages: t.gallery_images || [],
+          itinerary: t.itinerary || [],
+          tags: t.tags || []
+        })));
+      } else {
+        // Use Mock data if DB is empty or connection fails
+        console.warn('Trips fetch returned empty or failed, using fallback:', tripsError);
+        setTrips(MOCK_TRIPS);
+      }
 
-  const addTrip = (newTrip: Trip) => setTrips(prev => [newTrip, ...prev]);
-  const updateTrip = (updated: Trip) => setTrips(prev => prev.map(t => t.id === updated.id ? updated : t));
-  const deleteTrip = (id: string) => setTrips(prev => prev.filter(t => t.id !== id));
+      // Fetch Gallery
+      const { data: galleryData } = await supabase.from('gallery').select('*');
+      if (galleryData && galleryData.length > 0) {
+        setGalleryItems(galleryData);
+      } else {
+        setGalleryItems(GALLERY_IMAGES);
+      }
+
+      // Fetch Leads
+      const { data: leadsData } = await supabase.from('leads').select('*').order('created_at', { ascending: false });
+      if (leadsData) {
+        setLeads(leadsData.map(l => ({
+          ...l,
+          tripId: l.trip_id,
+          date: l.created_at
+        })));
+      }
+    } catch (err) {
+      console.error('Initial load failed entirely, using full mock fallback', err);
+      setTrips(MOCK_TRIPS);
+      setGalleryItems(GALLERY_IMAGES);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddTrip = async (newTrip: Trip) => {
+    const { error } = await supabase.from('trips').insert([{
+      ...newTrip,
+      base_price: newTrip.basePrice,
+      main_image: newTrip.mainImage,
+      gallery_images: newTrip.galleryImages,
+      itinerary: newTrip.itinerary,
+      tags: newTrip.tags
+    }]);
+    if (!error) fetchData();
+    else console.error('Error adding trip:', error);
+  };
+
+  const handleUpdateTrip = async (updated: Trip) => {
+    const { error } = await supabase.from('trips').update({
+      ...updated,
+      base_price: updated.basePrice,
+      main_image: updated.mainImage,
+      gallery_images: updated.galleryImages,
+      itinerary: updated.itinerary,
+      tags: updated.tags
+    }).eq('id', updated.id);
+    if (!error) fetchData();
+    else console.error('Error updating trip:', error);
+  };
+
+  const handleDeleteTrip = async (id: string) => {
+    const { error } = await supabase.from('trips').delete().eq('id', id);
+    if (!error) fetchData();
+    else console.error('Error deleting trip:', error);
+  };
   
-  const addGalleryItem = (item: GalleryImage) => setGalleryItems(prev => [item, ...prev]);
-  const updateGalleryItem = (updated: GalleryImage) => setGalleryItems(prev => prev.map(i => i.id === updated.id ? updated : i));
-  const deleteGalleryItem = (id: string) => setGalleryItems(prev => prev.filter(i => i.id !== id));
+  const handleAddGallery = async (item: GalleryImage) => {
+    const { error } = await supabase.from('gallery').insert([item]);
+    if (!error) fetchData();
+  };
 
-  const addInquiry = (inquiry: Inquiry) => setLeads(prev => [inquiry, ...prev]);
+  const handleUpdateGallery = async (updated: GalleryImage) => {
+    const { error } = await supabase.from('gallery').update(updated).eq('id', updated.id);
+    if (!error) fetchData();
+  };
+
+  const handleDeleteGallery = async (id: string) => {
+    const { error } = await supabase.from('gallery').delete().eq('id', id);
+    if (!error) fetchData();
+  };
+
+  const handleAddInquiry = async (inquiry: Inquiry) => {
+    const { error } = await supabase.from('leads').insert([{
+      id: inquiry.id,
+      trip_id: inquiry.tripId,
+      name: inquiry.name,
+      email: inquiry.email,
+      mobile: inquiry.mobile,
+      message: inquiry.message,
+      status: inquiry.status,
+      created_at: inquiry.date
+    }]);
+    if (!error) fetchData();
+    else console.error('Error submitting lead:', error);
+  };
+
+  if (loading) return (
+    <div className="h-screen w-screen flex items-center justify-center bg-white">
+      <div className="w-12 h-12 border-4 border-teal-100 border-t-teal-600 rounded-full animate-spin"></div>
+    </div>
+  );
 
   return (
     <HashRouter>
@@ -178,18 +233,18 @@ const App: React.FC = () => {
             <Route path="/" element={<Home trips={trips.filter(t => t.featured)} />} />
             <Route path="/destinations" element={<Destinations trips={trips} />} />
             <Route path="/gallery" element={<Gallery images={galleryItems} />} />
-            <Route path="/trip/:id" element={<TripDetail trips={trips} onInquiry={addInquiry} />} />
+            <Route path="/trip/:id" element={<TripDetail trips={trips} onInquiry={handleAddInquiry} />} />
             <Route path="/portal-access-vaha" element={
               <ProtectedAdmin>
                 <AdminDashboard 
                   trips={trips} 
-                  onAdd={addTrip} 
-                  onUpdate={updateTrip} 
-                  onDelete={deleteTrip}
+                  onAdd={handleAddTrip} 
+                  onUpdate={handleUpdateTrip} 
+                  onDelete={handleDeleteTrip}
                   galleryItems={galleryItems}
-                  onGalleryAdd={addGalleryItem}
-                  onGalleryUpdate={updateGalleryItem}
-                  onGalleryDelete={deleteGalleryItem}
+                  onGalleryAdd={handleAddGallery}
+                  onGalleryUpdate={handleUpdateGallery}
+                  onGalleryDelete={handleDeleteGallery}
                 />
               </ProtectedAdmin>
             } />
