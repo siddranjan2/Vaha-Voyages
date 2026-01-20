@@ -51,9 +51,9 @@ const Navbar: React.FC = () => {
   if (isAdmin) return null;
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/90 backdrop-blur-md py-4 shadow-sm' : 'bg-transparent py-6'}`}>
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/90 backdrop-blur-md py-3 md:py-4 shadow-sm' : 'bg-transparent py-4 md:py-6'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <Link to="/" className="text-2xl font-serif tracking-[0.05em] text-slate-900 uppercase flex items-center">
+        <Link to="/" className="text-xl md:text-2xl font-serif tracking-[0.05em] text-slate-900 uppercase flex items-center">
           <span className="text-teal-600 font-bold">V</span><span className="-ml-0.5">AHA VOYAGES</span>
         </Link>
         <div className="hidden md:flex space-x-12 items-center">
