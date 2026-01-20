@@ -203,7 +203,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           >
             Gallery Assets
           </button>
-          <Link to="/admin/leads" className="flex items-center gap-4 text-slate-400 hover:bg-slate-50 hover:text-teal-600 p-4 rounded-2xl text-xs font-black uppercase tracking-[0.2em] transition-all">
+          <Link to="/portal-access-vaha/leads" className="flex items-center gap-4 text-slate-400 hover:bg-slate-50 hover:text-teal-600 p-4 rounded-2xl text-xs font-black uppercase tracking-[0.2em] transition-all">
             Lead Desk
           </Link>
           <div className="pt-20 border-t border-slate-50 mt-10">

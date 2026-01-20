@@ -40,7 +40,8 @@ const ProtectedAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) =
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const isAdmin = location.pathname.startsWith('/admin');
+  // Hide navbar on any route starting with 'portal-access'
+  const isAdmin = location.pathname.includes('portal-access');
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -71,7 +72,7 @@ const Navbar: React.FC = () => {
 
 const Footer: React.FC = () => {
   const location = useLocation();
-  if (location.pathname.startsWith('/admin')) return null;
+  if (location.pathname.includes('portal-access')) return null;
   return (
     <footer className="bg-slate-50 border-t border-slate-100 py-16">
       <div className="container mx-auto px-6 grid md:grid-cols-4 gap-12">
@@ -98,7 +99,7 @@ const Footer: React.FC = () => {
                className="w-10 h-10 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:text-white hover:bg-teal-600 hover:border-teal-600 transition-all duration-300 group"
              >
                 <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.887.002-5.462-4.415-9.89-9.881-9.891-5.446 0-9.884 4.438-9.887 9.887-.001 2.22.634 4.385 1.835 6.265l-1.015 3.71 3.844-.888zm11.367-7.312c-.151-.252-.555-.403-1.161-.706-.606-.303-3.584-1.767-4.139-1.969-.556-.202-.96-.303-1.363.303-.404.606-1.565 1.97-1.918 2.374-.354.404-.707.455-1.313.152-.606-.303-2.559-1.13-4.874-3.195-1.762-1.571-2.951-3.511-3.297-4.117-.347-.606-.038-.933.265-1.234.272-.271.606-.706.808-1.01.202-.303.269-.522.404-.875.135-.353.067-.656-.034-.858-.101-.202-.858-2.068-1.176-2.834-.31-.749-.624-.648-.858-.66l-.733-.008c-.252 0-.663.095-1.008.473-.346.378-1.321 1.291-1.321 3.148 0 1.857 1.354 3.653 1.539 3.905.185.252 2.651 4.049 6.423 5.676.897.387 1.597.618 2.14.793 1.05.334 2.006.287 2.76.175.842-.125 2.583-1.056 2.946-2.074.364-1.018.364-1.892.253-2.074z" />
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.887.002-5.462-4.415-9.89-9.881-9.891-5.446 0-9.884 4.438-9.887 9.887-.001 2.22.634 4.385 1.835 6.265l-1.015 3.71 3.844-.888zm11.367-7.312c-.151-.252-.555-.403-1.161-.706-.606-.303-3.584-1.767-4.139-1.969-.556-.202-.96-.303-1.363.303-.404.606-1.565 1.97-1.918 2.374-.354.404-.707.455-1.313.152-.606-.303-2.559-1.13-4.874-3.195-1.571-2.951-3.511-3.297-4.117-.347-.606-.038-.933.265-1.234.272-.271.606-.706.808-1.01.202-.303.269-.522.404-.875.135-.353.067-.656-.034-.858-.101-.202-.858-2.068-1.176-2.834-.31-.749-.624-.648-.858-.66l-.733-.008c-.252 0-.663.095-1.008.473-.346.378-1.321 1.291-1.321 3.148 0 1.857 1.354 3.653 1.539 3.905.185.252 2.651 4.049 6.423 5.676.897.387 1.597.618 2.14.793 1.05.334 2.006.287 2.76.175.842-.125 2.583-1.056 2.946-2.074.364-1.018.364-1.892.253-2.074z" />
                 </svg>
              </a>
           </div>
@@ -117,7 +118,6 @@ const Footer: React.FC = () => {
             <li><a href="#" className="hover:text-teal-600 transition-colors">Curated Itineraries</a></li>
             <li><a href="#" className="hover:text-teal-600 transition-colors">Private Expedition</a></li>
             <li><a href="#" className="hover:text-teal-600 transition-colors">Privacy Policy</a></li>
-            <li><Link to="/admin" className="text-slate-200 hover:text-teal-600 transition-colors mt-8 block">Partner Access</Link></li>
           </ul>
         </div>
       </div>
@@ -179,7 +179,7 @@ const App: React.FC = () => {
             <Route path="/destinations" element={<Destinations trips={trips} />} />
             <Route path="/gallery" element={<Gallery images={galleryItems} />} />
             <Route path="/trip/:id" element={<TripDetail trips={trips} onInquiry={addInquiry} />} />
-            <Route path="/admin" element={
+            <Route path="/portal-access-vaha" element={
               <ProtectedAdmin>
                 <AdminDashboard 
                   trips={trips} 
@@ -193,7 +193,7 @@ const App: React.FC = () => {
                 />
               </ProtectedAdmin>
             } />
-            <Route path="/admin/leads" element={
+            <Route path="/portal-access-vaha/leads" element={
               <ProtectedAdmin>
                 <AdminLeads leads={leads} />
               </ProtectedAdmin>
