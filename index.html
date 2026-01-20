@@ -18,16 +18,29 @@
         h1, h2, h3, h4, .font-serif {
             font-family: 'Playfair Display', serif;
         }
+        
+        /* Premium Minimalist Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 4px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+            background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: #0d9488;
-            border-radius: 4px;
+            background: rgba(13, 148, 136, 0.1);
+            border-radius: 10px;
+            transition: background 0.3s ease;
         }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(13, 148, 136, 0.4);
+        }
+        
+        /* Firefox Support */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(13, 148, 136, 0.1) transparent;
+        }
+
         .text-teal-accent { color: #0d9488; }
         .bg-teal-accent { background-color: #0d9488; }
         .border-teal-accent { border-color: #0d9488; }

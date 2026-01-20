@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trip, ActivityType } from '../types';
@@ -68,24 +67,24 @@ const Home: React.FC<HomeProps> = ({ trips }) => {
            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-slate-900/20"></div>
         </div>
 
-        <div className="relative z-10 text-center px-6 w-full max-w-6xl animate-fade-in pt-24 md:pt-0">
-          <span className="inline-block bg-teal-600 text-white px-6 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] mb-6 md:mb-8 shadow-2xl">
+        <div className="relative z-10 text-center px-6 w-full max-w-6xl animate-fade-in pt-44 md:pt-0 pb-20 md:pb-0">
+          <span className="inline-block bg-teal-600 text-white px-6 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] mb-8 md:mb-12 shadow-2xl">
             Adventure Awaits
           </span>
-          <h1 className="text-4xl md:text-9xl font-serif text-white mb-6 md:mb-8 leading-tight md:leading-none drop-shadow-2xl">
+          <h1 className="text-5xl md:text-9xl font-serif text-white mb-8 md:mb-10 leading-tight md:leading-none drop-shadow-2xl">
             Live Your <span className="italic text-teal-400">Legend</span>
           </h1>
-          <p className="text-lg md:text-2xl text-white/90 font-medium mb-10 md:mb-12 tracking-wide max-w-2xl mx-auto drop-shadow-md">
+          <p className="text-lg md:text-2xl text-white/90 font-medium mb-12 md:mb-16 tracking-wide max-w-2xl mx-auto drop-shadow-md">
             Discover breathtaking expeditions that nourish the soul and challenge the body.
           </p>
           
           {/* Dynamic Search Bar */}
-          <div className="bg-white/10 backdrop-blur-2xl p-2 rounded-3xl md:rounded-full border border-white/20 flex flex-col md:flex-row items-stretch w-full max-w-6xl mx-auto shadow-2xl">
+          <div className="bg-white/10 backdrop-blur-2xl p-2 rounded-[2.5rem] md:rounded-full border border-white/20 flex flex-col md:flex-row items-stretch w-full max-w-6xl mx-auto shadow-2xl">
             
             {/* Destination Field */}
-            <div className="flex-grow flex items-center px-6 py-3 md:py-4 group hover:bg-white/5 transition-all rounded-2xl md:rounded-l-full">
+            <div className="flex-grow flex items-center px-6 py-4 md:py-4 group hover:bg-white/5 transition-all rounded-2xl md:rounded-l-full">
               <svg className="w-5 h-5 text-teal-400 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-              <div className="flex flex-col items-start w-full">
+              <div className="flex flex-col items-start w-full text-left">
                 <label className="text-[9px] uppercase tracking-widest text-white/60 font-black mb-1">Destination</label>
                 <input 
                   type="text" 
@@ -100,9 +99,9 @@ const Home: React.FC<HomeProps> = ({ trips }) => {
             <div className="hidden md:block w-px bg-white/10 self-stretch my-4"></div>
 
             {/* Dynamic Country Filter */}
-            <div className="flex-grow flex items-center px-6 py-3 md:py-4 group hover:bg-white/5 transition-all">
+            <div className="flex-grow flex items-center px-6 py-4 md:py-4 group hover:bg-white/5 transition-all">
               <svg className="w-5 h-5 text-sky-400 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <div className="flex flex-col items-start w-full">
+              <div className="flex flex-col items-start w-full text-left">
                 <label className="text-[9px] uppercase tracking-widest text-white/60 font-black mb-1">Country</label>
                 <select 
                   className="w-full bg-transparent text-white focus:outline-none cursor-pointer appearance-none text-base font-bold pr-8"
@@ -120,9 +119,9 @@ const Home: React.FC<HomeProps> = ({ trips }) => {
             <div className="hidden md:block w-px bg-white/10 self-stretch my-4"></div>
 
             {/* Dynamic Activity Filter */}
-            <div className="flex-grow flex items-center px-6 py-3 md:py-4 group hover:bg-white/5 transition-all">
+            <div className="flex-grow flex items-center px-6 py-4 md:py-4 group hover:bg-white/5 transition-all">
               <svg className="w-5 h-5 text-teal-400 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-              <div className="flex flex-col items-start w-full">
+              <div className="flex flex-col items-start w-full text-left">
                 <label className="text-[9px] uppercase tracking-widest text-white/60 font-black mb-1">Activity</label>
                 <select 
                   className="w-full bg-transparent text-white focus:outline-none cursor-pointer appearance-none text-base font-bold pr-8"
@@ -139,7 +138,7 @@ const Home: React.FC<HomeProps> = ({ trips }) => {
 
             <button 
               onClick={handleExplore}
-              className="bg-teal-500 text-slate-900 font-black uppercase tracking-[0.2em] px-10 py-4 md:py-5 rounded-2xl md:rounded-full hover:bg-white hover:scale-[1.03] transition-all active:scale-95 whitespace-nowrap shadow-xl m-1 text-sm"
+              className="bg-teal-500 text-slate-900 font-black uppercase tracking-[0.2em] px-10 py-5 md:py-5 rounded-[1.8rem] md:rounded-full hover:bg-white hover:scale-[1.03] transition-all active:scale-95 whitespace-nowrap shadow-xl m-1 text-sm"
             >
               Search
             </button>
@@ -171,7 +170,7 @@ const Home: React.FC<HomeProps> = ({ trips }) => {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s] ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
-                <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full">
+                <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full text-left">
                   <span className="inline-block bg-teal-600/90 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-4">
                     {trip.activity}
                   </span>
@@ -192,7 +191,7 @@ const Home: React.FC<HomeProps> = ({ trips }) => {
 
       {/* Bespoke Journeys Proposition */}
       <section className="py-24 md:py-32 bg-white relative overflow-hidden">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-16 md:gap-24">
+        <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-16 md:gap-24 text-left">
            <div className="w-full md:w-1/2 relative">
              <div className="absolute inset-0 border-[8px] md:border-[12px] border-teal-600/5 -m-4 md:-m-8 rounded-[3rem] md:rounded-[4rem]"></div>
              <div className="bg-slate-100 rounded-[2.5rem] md:rounded-[3rem] overflow-hidden h-[400px] md:h-[600px] shadow-2xl relative z-10">
@@ -214,14 +213,14 @@ const Home: React.FC<HomeProps> = ({ trips }) => {
                   <div className="w-10 h-10 md:w-12 md:h-12 bg-teal-50 rounded-2xl flex items-center justify-center text-teal-600 mb-4 md:mb-6 group-hover:bg-teal-600 group-hover:text-white transition-all">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
                   </div>
-                  <p className="text-xs md:text-sm uppercase tracking-widest font-black text-slate-900 mb-2">Tailored Routes</p>
+                  <p className="text-xs md:text-sm uppercase tracking-widest font-black text-slate-900 mb-2 text-left">Tailored Routes</p>
                   <p className="text-[10px] md:text-xs text-slate-400 font-medium leading-relaxed">Every turn mapped to your unique rhythm and curiosity.</p>
                 </div>
                 <div className="group">
                    <div className="w-10 h-10 md:w-12 md:h-12 bg-sky-50 rounded-2xl flex items-center justify-center text-sky-500 mb-4 md:mb-6 group-hover:bg-sky-500 group-hover:text-white transition-all">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197" /></svg>
                   </div>
-                  <p className="text-xs md:text-sm uppercase tracking-widest font-black text-slate-900 mb-2">Private Crew</p>
+                  <p className="text-xs md:text-sm uppercase tracking-widest font-black text-slate-900 mb-2 text-left">Private Crew</p>
                   <p className="text-[10px] md:text-xs text-slate-400 font-medium leading-relaxed">Dedicated experts at your command, from peak to base.</p>
                 </div>
               </div>
