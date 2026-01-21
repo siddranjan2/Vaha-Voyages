@@ -23,10 +23,14 @@ const AdminLeads: React.FC<AdminLeadsProps> = ({ leads }) => {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>
             Lead Desk
           </div>
-          <div className="pt-20 border-t border-slate-50 mt-10">
-            <Link to="/" className="text-[10px] text-slate-300 uppercase tracking-[0.4em] font-black hover:text-teal-600">Site Home</Link>
-          </div>
         </nav>
+
+        <div className="mt-auto pt-10 border-t border-slate-100">
+           <Link to="/" className="flex items-center justify-center gap-3 w-full bg-slate-900 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-teal-600 transition-all">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+              Back to Site
+           </Link>
+        </div>
       </aside>
 
       <main className="flex-grow overflow-y-auto p-16">

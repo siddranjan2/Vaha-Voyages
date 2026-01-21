@@ -29,7 +29,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [isAddingGallery, setIsAddingGallery] = useState(false);
   const [editingGalleryId, setEditingGalleryId] = useState<string | null>(null);
 
-  // Fix: Removed 'addons' property which was not in Trip interface.
   const initialTripForm: Partial<Trip> = {
     title: '', description: '', destination: '', country: '', basePrice: 0,
     activity: ActivityType.TREKKING, difficulty: Difficulty.MODERATE, duration: '7 Days',
@@ -100,6 +99,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           <button onClick={() => setActiveTab('gallery')} className={`flex items-center gap-4 text-xs font-black uppercase tracking-[0.2em] w-full p-4 rounded-2xl transition-all ${activeTab === 'gallery' ? 'bg-teal-600 text-white shadow-lg' : 'text-slate-400'}`}>Gallery Assets</button>
           <Link to="/portal-access-vaha/leads" className="flex items-center gap-4 text-slate-400 p-4 rounded-2xl text-xs font-black uppercase tracking-[0.2em]">Lead Desk</Link>
         </nav>
+        
+        <div className="mt-auto pt-10 border-t border-slate-100">
+           <Link to="/" className="flex items-center justify-center gap-3 w-full bg-slate-900 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-teal-600 transition-all">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+              Back to Site
+           </Link>
+        </div>
       </aside>
 
       <main className="flex-grow overflow-y-auto p-16">
